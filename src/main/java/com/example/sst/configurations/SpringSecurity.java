@@ -19,7 +19,8 @@ public class SpringSecurity {
 
         http.csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/auth/signup/*")
+                        .requestMatchers("/api/v1/auth/signup/*","/api/v1/auth/signin/*")
+
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

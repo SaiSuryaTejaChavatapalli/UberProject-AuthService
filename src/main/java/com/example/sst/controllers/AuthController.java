@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @GetMapping("/signin/passenger")
-    public ResponseEntity<?> signinPassenger(){
+    public ResponseEntity<?> signinPassenger( ){
         return  new ResponseEntity<>(10, HttpStatus.OK);
     }
 

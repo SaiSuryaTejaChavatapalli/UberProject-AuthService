@@ -63,7 +63,7 @@ public class AuthController {
             // Custom Headers
             response.setHeader(HttpHeaders.SET_COOKIE,cookie.toString());
 
-            return  new ResponseEntity<>(jwtToken,HttpStatus.OK);
+            return  new ResponseEntity<>("",HttpStatus.OK);
         }
         else{
            throw  new UsernameNotFoundException("User not found");

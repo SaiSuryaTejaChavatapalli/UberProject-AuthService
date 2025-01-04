@@ -12,9 +12,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 @Configuration
-public class SpringSecurity {
+public class SpringSecurity implements WebMvcConfigurer {
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -25,10 +32,10 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(customizer -> customizer.disable())
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/auth/signup/*","/api/v1/auth/signin/*")
+                        .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/signup/*","/api/v1/auth/signin/*")
                         .permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest()
+                        .authenticated());
 
 
         return http.build();
@@ -59,4 +66,14 @@ public class SpringSecurity {
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowCredentials(true)
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+    }
+
+
 }

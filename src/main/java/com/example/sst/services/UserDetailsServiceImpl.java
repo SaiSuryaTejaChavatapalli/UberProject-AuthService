@@ -3,6 +3,7 @@ package com.example.sst.services;
 import com.example.sst.helpers.AuthPassengerDetails;
 import com.example.sst.models.Passenger;
 import com.example.sst.repositories.PassengerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +17,12 @@ import java.util.Optional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final PassengerRepository passengerRepository;
+    @Autowired
+    private  PassengerRepository passengerRepository;
 
-    public UserDetailsServiceImpl(PassengerRepository passengerRepository) {
-        this.passengerRepository = passengerRepository;
-    }
+//    public UserDetailsServiceImpl(PassengerRepository passengerRepository) {
+//        this.passengerRepository = passengerRepository;
+//    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

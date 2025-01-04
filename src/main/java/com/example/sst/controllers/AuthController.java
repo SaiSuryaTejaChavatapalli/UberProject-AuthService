@@ -1,6 +1,7 @@
 package com.example.sst.controllers;
 
 import com.example.sst.dtos.AuthRequestDto;
+import com.example.sst.dtos.AuthResponseDto;
 import com.example.sst.dtos.PassengerDto;
 import com.example.sst.dtos.PassengerSignupRequestDto;
 import com.example.sst.services.AuthService;
@@ -63,7 +64,7 @@ public class AuthController {
             // Custom Headers
             response.setHeader(HttpHeaders.SET_COOKIE,cookie.toString());
 
-            return  new ResponseEntity<>("",HttpStatus.OK);
+            return  new ResponseEntity<>(AuthResponseDto.builder().success(true).build(),HttpStatus.OK);
         }
         else{
            throw  new UsernameNotFoundException("User not found");

@@ -6,6 +6,8 @@ import com.example.sst.dtos.PassengerDto;
 import com.example.sst.dtos.PassengerSignupRequestDto;
 import com.example.sst.services.AuthService;
 import com.example.sst.services.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -49,8 +51,6 @@ public class AuthController {
 
     @PostMapping("/signin/passenger")
     public ResponseEntity<?> signinPassenger(@RequestBody AuthRequestDto authRequestDto, HttpServletResponse response){
-
-
         Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(),authRequestDto.getPassword()));
 
         if(authentication.isAuthenticated()){
@@ -70,6 +70,14 @@ public class AuthController {
            throw  new UsernameNotFoundException("User not found");
         }
 
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validate(HttpServletRequest request){
+       for(Cookie cookie: request.getCookies()){
+           System.out.println(cookie.getName()+" "+cookie.getValue());
+       }
+        return new ResponseEntity<>("Success",HttpStatus.OK);
     }
 
 }

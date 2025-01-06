@@ -32,7 +32,9 @@ public class SpringSecurity implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(customizer -> customizer.disable())
-                        .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/signup/*","/api/v1/auth/signin/*")
+                        .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/signup/*",
+                                        "/api/v1/auth/signin/*",
+                                        "/api/v1/auth/validate")
                         .permitAll()
                         .anyRequest()
                         .authenticated());

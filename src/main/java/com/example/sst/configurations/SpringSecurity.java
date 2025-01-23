@@ -1,6 +1,8 @@
 package com.example.sst.configurations;
 
+import com.example.sst.filters.JwtAuthFilter;
 import com.example.sst.services.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,6 +26,9 @@ import java.util.Arrays;
 @Configuration
 public class SpringSecurity implements WebMvcConfigurer {
 
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+
     @Bean
     public UserDetailsService userDetailsService(){
         return new UserDetailsServiceImpl();
@@ -33,11 +39,13 @@ public class SpringSecurity implements WebMvcConfigurer {
 
         http.csrf(customizer -> customizer.disable())
                         .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/signup/*",
-                                        "/api/v1/auth/signin/*",
-                                        "/api/v1/auth/validate")
+                                        "/api/v1/auth/signin/*"
+                                        )
                         .permitAll()
                         .anyRequest()
-                        .authenticated());
+                        .authenticated()).authenticationProvider(authenticationProvider())
+
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
